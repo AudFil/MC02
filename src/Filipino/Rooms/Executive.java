@@ -2,10 +2,10 @@ package Filipino.Rooms;
 
 import Filipino.Room;
 
-public class Deluxe extends Room{
-    private double multipler = 0.2;
+public class Executive extends Room{
+    private double multipler = 0.35;
 
-    public Deluxe(char roomType){
+    public Executive(char roomType){
         super(roomType);
     }
 

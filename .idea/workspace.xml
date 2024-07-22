@@ -5,13 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3bff56e0-50c4-44e2-9cef-c6e9fdcbc1d7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HRS Upgrade.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Filipino/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Executive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Driver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Driver.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Driver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Hotel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Reservation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Deluxe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Deluxe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Exclusive.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Standard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Standard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +34,13 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -48,7 +57,7 @@
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "up",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/shado/IdeaProjects/HRS Upgrade",
     "onboarding.tips.debug.path": "C:/Users/shado/IdeaProjects/HRS Upgrade/src/Main.java",
@@ -67,6 +76,42 @@
       <option name="presentableId" value="Default" />
       <updated>1721481507441</updated>
     </task>
+    <task id="LOCAL-00001" summary="v1, MC01 + GUI implemented">
+      <option name="closed" value="true" />
+      <created>1721641673864</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1721641673864</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="TEXT_FILTER_SETTINGS">
+                <TextFilterSettings>
+                  <option name="MATCH_CASE" value="true" />
+                  <option name="REGEX" value="true" />
+                </TextFilterSettings>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="v1, MC01 + GUI implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1, MC01 + GUI implemented" />
   </component>
 </project>

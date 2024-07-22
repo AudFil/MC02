@@ -4,39 +4,60 @@ package Filipino;
  * Reservation
  */
 public class Reservation {
-    private String name;
+    private String reservationName;
     private int checkin;
     private int checkout;
-    private Room room;
-    private int price;
-    private int totalprice;
+    private int discountCode;
+    private int roomNumber;
+    private boolean validCode;
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getTotalprice() {
-        return totalprice;
-    }
-
-    public void computetotalprice(){
-        totalprice = (checkout - checkin) * price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getCheckin() {
-        return checkin;
-    }
-
-    public void setCheckin(int checkin) {
+    public Reservation(String name, int checkin, int checkout, int discountCode, int roomNumber) {
+        this.reservationName = name;
         this.checkin = checkin;
+        this.checkout = checkout;
+        this.discountCode = discountCode;
+        this.roomNumber = roomNumber;
+
+        checkCode();
+    }
+
+    /**
+     * Methods
+     */
+
+    public void checkCode(){
+        validCode = true;
+
+        switch (discountCode){
+            case 1:
+                if(checkout - checkin < 5){
+                    validCode = false;
+                }
+            case 2:
+                if(checkout % 15 == 0){
+                    validCode = false;
+                }
+        }
+    }
+
+    /**
+     * Getters and Setters
+     */
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public int getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(int discountCode) {
+        this.discountCode = discountCode;
     }
 
     public int getCheckout() {
@@ -47,11 +68,23 @@ public class Reservation {
         this.checkout = checkout;
     }
 
-    public Room getRoom() {
-        return room;
+    public int getCheckin() {
+        return checkin;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setCheckin(int checkin) {
+        this.checkin = checkin;
+    }
+
+    public String getreservationName() {
+        return reservationName;
+    }
+
+    public void setreservationName(String reservationName) {
+        this.reservationName = reservationName;
+    }
+
+    public boolean isValidCode() {
+        return validCode;
     }
 }

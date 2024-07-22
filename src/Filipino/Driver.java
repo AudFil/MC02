@@ -113,38 +113,8 @@ public class Driver implements ActionListener {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////CREATE HOTEL///////////////////////////////////////////////////////////
+    //////////////////////////////////////////////Main System///////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public boolean validateRooms(int numOfRooms) {
-        return numOfRooms <= 50 && numOfRooms >= 1;
-    }
-
-    public boolean searchHotelName(String hotelName) {
-        boolean valid = true;
-
-        if (hotel.size() > 0) {
-            for (int i = 0; i < hotel.size(); i++) {
-                if (hotelName.compareTo(hotel.get(i).getName()) == 0) {
-                    valid = false;
-                }
-            }
-        }
-        return valid;
-    }
-
-    /**
-     * iniRooms
-     * Initialize the rooms
-     *
-     * @param index
-     */
-    public void iniRooms(int index) {
-        for (int i = 0; i < hotel.get(index).getNumberOfRooms(); i++) {
-            hotel.get(index).setroom(new Room(hotel.get(index).getRoomCount()));
-            hotel.get(index).addRoomCount();
-        }
-    }
 
     /**
      * Create Hotel
@@ -152,84 +122,6 @@ public class Driver implements ActionListener {
      */
     public void createHotel(String hotelName, int standard, int deluxe, int exclusive) {
         hotel.add(hotel.size(), new Hotel(hotelName, standard, deluxe, exclusive)); //Adds a new hotel to arraylist
-        iniRooms(hotel.size() - 1); //Initialize the rooms of the hotel
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////VIEW HOTEL///////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public int searchHotel(String hotelName) {
-        int index = -1;
-        if (hotel.size() > 0) {
-            for (int i = 0; i < hotel.size(); i++) {
-                if (hotelName.compareTo(hotel.get(i).getName()) == 0) {
-                    index = i;
-                }
-            }
-        }
-        return index;
-    }
-
-    public int searchGuest(int index, String gName) {
-        int gindex = -1;
-        if (hotel.get(index).getReservationCount() > 0) {
-            for (int i = 0; i < hotel.get(index).getReservationCount(); i++) {
-                if (gName.compareTo(hotel.get(index).getreservation(i).getName()) == 0) {
-                    gindex = i;
-                }
-            }
-        }
-        return gindex;
-    }
-
-    /**
-     * Room Info
-     * Gets information of the room based on the chosen room and the hotel
-     *
-     * @param index
-     * @param roomindex
-     */
-    public void roomInfo(int index, int roomindex) {
-        JOptionPane.showMessageDialog(null, "Room " + hotel.get(index).getroom(roomindex).getName() + "\nPrice per Night: " + hotel.get(index).getPrice(), "Room Information", JOptionPane.INFORMATION_MESSAGE);
-
-        if (hotel.get(index).getroom(roomindex).getBookCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No bookings has been made!", "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            for (int i = 0; i < hotel.get(index).getroom(roomindex).getBookCount(); i++) {
-                JOptionPane.showMessageDialog(null, "Checkin: " + hotel.get(index).getroom(roomindex).getcheckin(i) + "- Checkout:" + hotel.get(index).getroom(roomindex).getcheckout(i), "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-
-
-    }
-
-    /**
-     * Room Availability
-     * Gets the number of free and booked rooms for a certain day
-     *
-     * @param index
-     * @param day
-     */
-    public void roomAvailability(int index, int day) {
-        int checkout;
-        int checkin;
-
-        int freeRooms = hotel.get(index).getNumberOfRooms();
-        int bookedRooms = 0;
-
-        for (int i = 0; i < hotel.get(index).getNumberOfRooms(); i++) {
-            for (int j = 0; j < hotel.get(index).getroom(i).getBookCount(); j++) {
-                checkout = hotel.get(index).getroom(i).getcheckout(j); //For readability
-                checkin = hotel.get(index).getroom(i).getcheckin(j); //For readability
-                if (checkout > day && checkin <= day) {
-                    bookedRooms++;
-                    freeRooms--;
-                }
-            }
-        }
-
-        JOptionPane.showMessageDialog(null, "Free rooms for day " + day + ": " + freeRooms + "\nBooked rooms for day " + day + ": " + bookedRooms, "Room Availabilty on " + day, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -310,29 +202,14 @@ public class Driver implements ActionListener {
                             JOptionPane.showMessageDialog(null, "Guest not found", "Display Reservation", JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                    //No reservations are made in the hotel
+                    //No reservation are made in the hotel
                     else {
-                        JOptionPane.showMessageDialog(null, "Please make some reservations first!", "No Reservations", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please make some reservation first!", "No Reservations", JOptionPane.ERROR_MESSAGE);
                     }
             }
 
         }
 
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////MANAGE HOTEL/////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean confirmation() {
-        int choice = JOptionPane.showOptionDialog(null, "Are you sure you want apply this change?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, 0);
-
-        if (choice == 0) {
-            JOptionPane.showMessageDialog(null, "Changes saved", "Changes", JOptionPane.INFORMATION_MESSAGE);
-            return true;
-        }
-
-        JOptionPane.showMessageDialog(null, "Changes have not been saved", "Changes", JOptionPane.INFORMATION_MESSAGE);
-        return false;
     }
 
     /**
@@ -451,7 +328,7 @@ public class Driver implements ActionListener {
                     newprice = hotel.get(index).getPrice();
 
                     if (hotel.get(index).getReservationCount() > 0) {
-                        JOptionPane.showMessageDialog(null, "Cannot change room pricing: There are reservations!", "Update Price", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Cannot change room pricing: There are reservation!", "Update Price", JOptionPane.WARNING_MESSAGE);
                     } else {
                         do {
                             try {
@@ -477,7 +354,7 @@ public class Driver implements ActionListener {
                             }
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Please make some reservations first!", "Remove Reservation", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Please make some reservation first!", "Remove Reservation", JOptionPane.WARNING_MESSAGE);
                     }
 
                     break;
@@ -492,32 +369,9 @@ public class Driver implements ActionListener {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////SIMULATE BOOKING/////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public int checkDiscountCode(String code){
-        int codeType;
-
-        switch(code){
-            case "I_WORK_HERE":
-                codeType = 0;
-                break;
-            case "STAY4_GET1":
-                codeType = 1;
-                break;
-            case "PAYDAY":
-                codeType = 2;
-                break;
-            default:
-                codeType = -1;
-        }
-        return codeType;
-    }
-
     /**
      * Simulate Booking
-     * Make reservations for hotels
+     * Make reservation for hotels
      */
     public void simulateBooking() {
         int i;
@@ -587,4 +441,134 @@ public class Driver implements ActionListener {
             }
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////HELPING FUNCTIONS//////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public int searchHotel(String hotelName) {
+        int index = -1;
+        if (hotel.size() > 0) {
+            for (int i = 0; i < hotel.size(); i++) {
+                if (hotelName.compareTo(hotel.get(i).getName()) == 0) {
+                    index = i;
+                }
+            }
+        }
+        return index;
+    }
+
+    public int searchGuest(int index, String gName) {
+        int gindex = -1;
+        if (hotel.get(index).getReservationCount() > 0) {
+            for (int i = 0; i < hotel.get(index).getRoom(); i++) {
+                for(int j = 0){
+                    for(int k = 0;){
+                        if (gName.compareTo(hotel.get(index).getRoom(1, i).getReservation().get(i).getreservationName()) == 0) {
+                            gindex = i;
+                        }
+                    }
+                }
+            }
+        }
+        return gindex;
+    }
+
+    public boolean validateRooms(int numOfRooms) {
+        return numOfRooms <= 50 && numOfRooms >= 1;
+    }
+
+    public boolean searchHotelName(String hotelName) {
+        boolean valid = true;
+
+        if (hotel.size() > 0) {
+            for (int i = 0; i < hotel.size(); i++) {
+                if (hotelName.compareTo(hotel.get(i).getName()) == 0) {
+                    valid = false;
+                }
+            }
+        }
+        return valid;
+    }
+
+    /**
+     * Room Info
+     * Gets information of the room based on the chosen room and the hotel
+     *
+     * @param index
+     * @param roomindex
+     */
+    public void roomInfo(int index, int roomindex) {
+        JOptionPane.showMessageDialog(null, "Room " + hotel.get(index).getroom(roomindex).getName() + "\nPrice per Night: " + hotel.get(index).getPrice(), "Room Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if (hotel.get(index).getroom(roomindex).getBookCount() == 0) {
+            JOptionPane.showMessageDialog(null, "No bookings has been made!", "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            for (int i = 0; i < hotel.get(index).getroom(roomindex).getBookCount(); i++) {
+                JOptionPane.showMessageDialog(null, "Checkin: " + hotel.get(index).getroom(roomindex).getcheckin(i) + "- Checkout:" + hotel.get(index).getroom(roomindex).getcheckout(i), "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+
+    }
+
+    /**
+     * Room Availability
+     * Gets the number of free and booked rooms for a certain day
+     *
+     * @param index
+     * @param day
+     */
+    public void roomAvailability(int index, int day) {
+        int checkout;
+        int checkin;
+
+        int freeRooms = hotel.get(index).getNumberOfRooms();
+        int bookedRooms = 0;
+
+        for (int i = 0; i < hotel.get(index).getNumberOfRooms(); i++) {
+            for (int j = 0; j < hotel.get(index).getroom(i).getBookCount(); j++) {
+                checkout = hotel.get(index).getroom(i).getcheckout(j); //For readability
+                checkin = hotel.get(index).getroom(i).getcheckin(j); //For readability
+                if (checkout > day && checkin <= day) {
+                    bookedRooms++;
+                    freeRooms--;
+                }
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Free rooms for day " + day + ": " + freeRooms + "\nBooked rooms for day " + day + ": " + bookedRooms, "Room Availabilty on " + day, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public boolean confirmation() {
+        int choice = JOptionPane.showOptionDialog(null, "Are you sure you want apply this change?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, 0);
+
+        if (choice == 0) {
+            JOptionPane.showMessageDialog(null, "Changes saved", "Changes", JOptionPane.INFORMATION_MESSAGE);
+            return true;
+        }
+
+        JOptionPane.showMessageDialog(null, "Changes have not been saved", "Changes", JOptionPane.INFORMATION_MESSAGE);
+        return false;
+    }
+
+    public int checkDiscountCode(String code){
+        int codeType;
+
+        switch(code){
+            case "I_WORK_HERE":
+                codeType = 0;
+                break;
+            case "STAY4_GET1":
+                codeType = 1;
+                break;
+            case "PAYDAY":
+                codeType = 2;
+                break;
+            default:
+                codeType = -1;
+        }
+        return codeType;
+    }
+
 }

@@ -6,52 +6,58 @@ import java.util.ArrayList;
  * Room
  */
 public class Room{
-    private int name;
-    private boolean available;
-    private int price;
-    private int bookCount = 0;
-    private ArrayList<Integer> checkin = new ArrayList<>();
-    private ArrayList<Integer> checkout = new ArrayList<>();
+    protected int roomNumber;
+    protected boolean available;
+    protected ArrayList<Reservation> reservation = new ArrayList<>();
+    protected char roomType;
 
-    public Room(int name) {
-        this.name = name;
+    public Room(char roomType){
+        this.roomType = roomType;
     }
 
-    public int getName() {
-        return name;
+    /**
+     * Methods
+     */
+
+    public void addReservation(Reservation reservation){
+        this.reservation.add(reservation);
     }
 
-    public boolean isAvailable(int checkin1, int checkout1) {
+    public void removeReservation(int index){
+        this.reservation.remove(index);
+    }
+
+    public boolean isAvailable(int checkin, int checkout) {
         available = true;
-        for (int i = 0; i < bookCount; i++) {
-            if(checkin.get(i) < checkout1 && checkout.get(i) > checkin1){
+        for (int i = 0; i < reservation.size(); i++) {
+            if(reservation.get(i).getCheckin() < checkout && reservation.get(i).getCheckout() > checkin){
                 available = false;
             }
         }
         return available;
     }
 
-    public int getBookCount() {
-        return bookCount;
+    /**
+     * Getters and Setters
+     */
+
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
-    public void addBookCount() {
-        bookCount++;
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
-    public int getcheckin(int index){
-        return checkin.get(index);
+    public char getRoomType() {
+        return roomType;
     }
 
-    public void setcheckin(int checkin){
-        this.checkin.add(checkin);
+    public boolean isAvailable() {
+        return available;
     }
 
-    public int getcheckout(int index){
-        return checkout.get(index);
-    }
-
-    public void setcheckout(int checkout){
-        this.checkout.add(checkout);
+    public ArrayList<Reservation> getReservation() {
+        return reservation;
     }
 }
