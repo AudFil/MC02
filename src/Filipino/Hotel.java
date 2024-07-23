@@ -5,6 +5,8 @@ import Filipino.Rooms.Executive;
 import Filipino.Rooms.Standard;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Hotel
@@ -14,6 +16,7 @@ public class Hotel {
     private double price;
     private int roomCount = 1;
     private int reservationCount = 0;
+    private ArrayList<DatePriceModifier> specialRates = new ArrayList<>();
     private ArrayList<Room> standardRooms = new ArrayList();
     private ArrayList<Room> deluxeRooms = new ArrayList();
     private ArrayList<Room> executiveRooms= new ArrayList();
@@ -79,9 +82,31 @@ public class Hotel {
         reservationCount--;
     }
 
+    public void addspecialRates(double rate, int start, int end){
+        specialRates.add(new DatePriceModifier(rate, start, end));
+    }
+
+    public void removespecialRates(int index){
+        specialRates.remove(index);
+    }
+
+    public double computeEarnings(){
+        double earnings = 0;
+
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < room.get(i).size(); j++){
+                for (int k = 0; k < room.get(i).get(j).reservation.size(); k++){
+                    earnings += room.get(i).get(j).computePrice(k, price);
+                }
+            }
+        }
+        return earnings;
+    }
+
     /**
      * Getters and Setters
      */
+
     public String getName() {
         return name;
     }
@@ -98,15 +123,15 @@ public class Hotel {
         this.price = price;
     }
 
-    public int getRoomCount() {
-        return roomCount;
-    }
-
     public int getReservationCount() {
         return reservationCount;
     }
 
-    public Room getRoom(int roomType, int index){
-        return room.get(roomType).get(index);
+    public ArrayList<ArrayList<Room>> getroomList(){
+        return room;
+    }
+
+    public ArrayList<DatePriceModifier> getSpecialRates(){
+        return specialRates;
     }
 }

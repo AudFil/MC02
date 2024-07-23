@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3bff56e0-50c4-44e2-9cef-c6e9fdcbc1d7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Executive.java" afterDir="false" />
+    <list default="true" id="3bff56e0-50c4-44e2-9cef-c6e9fdcbc1d7" name="Changes" comment="v2, Completed all the subrooms and discount. No boost price for days yet.">
+      <change afterPath="$PROJECT_DIR$/src/Filipino/DatePriceModifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Driver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Driver.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Driver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Hotel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Filipino/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Reservation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Deluxe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Deluxe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Exclusive.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Executive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Executive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Standard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Standard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,22 +49,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.HotelManagementSystem.executor": "Run",
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "up",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/shado/IdeaProjects/HRS Upgrade",
-    "onboarding.tips.debug.path": "C:/Users/shado/IdeaProjects/HRS Upgrade/src/Main.java",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.HotelManagementSystem.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;up&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/shado/IdeaProjects/HRS Upgrade&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/shado/IdeaProjects/HRS Upgrade/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -84,7 +82,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721641673864</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="v2, Completed all the subrooms and discount. No boost price for days yet.">
+      <option name="closed" value="true" />
+      <created>1721659324410</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1721659324410</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -112,6 +118,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="v1, MC01 + GUI implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1, MC01 + GUI implemented" />
+    <MESSAGE value="v2, Completed all the subrooms and discount. No boost price for days yet." />
+    <option name="LAST_COMMIT_MESSAGE" value="v2, Completed all the subrooms and discount. No boost price for days yet." />
   </component>
 </project>

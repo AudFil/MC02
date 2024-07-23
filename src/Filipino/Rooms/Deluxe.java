@@ -9,6 +9,12 @@ public class Deluxe extends Room{
         super(roomType);
     }
 
+    @Override
+    public double pricePerNight(double price){
+        return price + (price * multipler);
+    }
+
+    @Override
     public double computePrice(int reservationIndex, double price){
         double finalPrice;
         double temp;

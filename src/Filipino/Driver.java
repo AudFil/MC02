@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Locale;
 
 public class Driver implements ActionListener {
     private ArrayList<Hotel> hotel = new ArrayList<>(); //List of hotels
@@ -133,18 +134,19 @@ public class Driver implements ActionListener {
         int choice;
         int day = 0;
         int roomind = -1;
-        int gIndex = -1;
+        int roomType = -1;
+        int[] gData = {-1, -1, -1};
 
         boolean valid;
 
+        String msg;
         String gName;
-        String[] viewOptions = {"Hotel Name", "Number of Rooms", "Estimated Earnings", "Number of free/booked rooms", "Room Information", "Hotel Reservations"};
+        String[] viewOptions = {"Hotel Name", "Number of Rooms", "Estimated Earnings", "Number of free/booked rooms", "Room Information", "Hotel Reservations", "Special Dates"};
 
         name = JOptionPane.showInputDialog("Enter Hotel Name to view: ");
         index = searchHotel(name);
 
         if (index != -1) {
-
             choice = JOptionPane.showOptionDialog(null, "View Hotel Options: ", "View Hotel", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, viewOptions, 0);
             choice++;
             //View actions for the hotel
@@ -153,10 +155,10 @@ public class Driver implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Hotel: " + hotel.get(index).getName(), "Hotel Name", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 2: //Check the number of rooms
-                    JOptionPane.showMessageDialog(null, "Number of Rooms: " + hotel.get(index).getNumberOfRooms(), "Number of Rooms", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Number of Rooms: " + hotel.get(index).getroomList().size(), "Number of Rooms", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 3: //Check the estimated earnings
-                    JOptionPane.showMessageDialog(null, "Estimated Earnings: " + hotel.get(index).getTotalEarnings(), "Estimated Earnings", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Estimated Earnings: " + hotel.get(index).computeEarnings(), "Estimated Earnings", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 4: //Checks the number of free and booked rooms in a specific day
                     do {
@@ -175,29 +177,31 @@ public class Driver implements ActionListener {
                     do {
                         valid = false;
                         try {
-                            roomind = Integer.parseInt(JOptionPane.showInputDialog("Please enter a room  (1 - " + hotel.get(index).getNumberOfRooms() + "): "));
+                            msg = "1 - Standard\n2 - Deluxe\n3 - Exclusive\nPlease enter a room type: ";
+                            roomType = Integer.parseInt(JOptionPane.showInputDialog(msg));
+                            roomind = Integer.parseInt(JOptionPane.showInputDialog("Please enter a room  (1 - " + hotel.get(index).getroomList().size() + "): "));
                         } catch (NumberFormatException o) {
                             JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
                             valid = true;
                         }
-                    } while (!(roomind >= 1 && roomind <= hotel.get(index).getNumberOfRooms()) && valid); //Input an existing room
+                    } while (!(roomind >= 1 && roomind <= hotel.get(index).getroomList().get(roomType).size()) && valid); //Input an existing room
                     roomind--;
-                    roomInfo(index, roomind); //Displays room information
+                    roomInfo(index, roomind, roomType); //Displays room information
                     break;
                 case 6: //Checks the information regarding an existing reservation
                     //If there is a reservation in the given hotel
                     if (hotel.get(index).getReservationCount() > 0) {
                         gName = JOptionPane.showInputDialog("Please enter reservation name: ");
-                        gIndex = searchGuest(index, gName);
+                        searchGuest(index, gName, gData);
 
-                        if (gIndex != -1) {
-                            JOptionPane.showMessageDialog(null,
-                                    "Guest name: " + hotel.get(index).getreservation(gIndex).getName() +
-                                            "\nGuest room: " + hotel.get(index).getreservation(gIndex).getRoom().getName()
-                                            + "\nCheck-in: " + hotel.get(index).getreservation(gIndex).getCheckin()
-                                            + "\nCheck-out: " + hotel.get(index).getreservation(gIndex).getCheckout()
-                                            + "\nTotal price: " + hotel.get(index).getreservation(gIndex).getTotalprice()
-                                            + "\nPrice per night: " + hotel.get(index).getPrice(), "Guest Information", JOptionPane.INFORMATION_MESSAGE);
+                        if (gData[0] != -1) {
+                            msg = "Guest name: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).getReservation().get(gData[2]).getreservationName() +
+                                    "\nGuest room: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).getRoomNumber()
+                                    + "\nCheck-in: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).getReservation().get(gData[2]).getCheckin()
+                                    + "\nCheck-out: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).getReservation().get(gData[2]).getCheckout()
+                                    + "\nTotal price: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).computePrice(gData[2], hotel.get(index).getPrice())
+                                    + "\nPrice per night: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).pricePerNight(hotel.get(index).getPrice());
+                            JOptionPane.showMessageDialog(null, msg, "Guest Information", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(null, "Guest not found", "Display Reservation", JOptionPane.ERROR_MESSAGE);
                         }
@@ -205,6 +209,14 @@ public class Driver implements ActionListener {
                     //No reservation are made in the hotel
                     else {
                         JOptionPane.showMessageDialog(null, "Please make some reservation first!", "No Reservations", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
+                case 7:
+                    for(int i = 0; i < hotel.get(index).getSpecialRates().size(); i++){
+                        msg = "Modifier: " + hotel.get(index).getSpecialRates().get(i).getModifier()
+                                + "Start" + hotel.get(index).getSpecialRates().get(i).getStartDate()
+                                + "End" + hotel.get(index).getSpecialRates().get(i).getEndDate();
+                        JOptionPane.showMessageDialog(null, msg, "View Special Dates", JOptionPane.INFORMATION_MESSAGE);
                     }
             }
 
@@ -458,20 +470,24 @@ public class Driver implements ActionListener {
         return index;
     }
 
-    public int searchGuest(int index, String gName) {
-        int gindex = -1;
+    public void searchGuest(int index, String gName, int[] data) {
+        data[0] = -1; //Room Type
+        data[1] = -1; //Room Number
+        data[2] = -1; //Reservation Number
+
         if (hotel.get(index).getReservationCount() > 0) {
-            for (int i = 0; i < hotel.get(index).getRoom(); i++) {
-                for(int j = 0){
-                    for(int k = 0;){
-                        if (gName.compareTo(hotel.get(index).getRoom(1, i).getReservation().get(i).getreservationName()) == 0) {
-                            gindex = i;
+            for (int i = 0; i < 3; i++) { //Go through each type of room
+                for(int j = 0; j < hotel.get(index).getroomList().get(i).size(); j++){ //How many rooms for each type to go through
+                    for(int k = 0; k < hotel.get(index).getroomList().get(i).get(j).getReservation().size(); k++){ //How many reservations in each room
+                        if (gName.compareTo(hotel.get(index).getroomList().get(i).get(j).getReservation().get(k).getreservationName()) == 0) {
+                            data[0] = i; //Room Type
+                            data[1] = j; //Room Number
+                            data[2] = k; //Reservation Number
                         }
                     }
                 }
             }
         }
-        return gindex;
     }
 
     public boolean validateRooms(int numOfRooms) {
@@ -498,14 +514,18 @@ public class Driver implements ActionListener {
      * @param index
      * @param roomindex
      */
-    public void roomInfo(int index, int roomindex) {
-        JOptionPane.showMessageDialog(null, "Room " + hotel.get(index).getroom(roomindex).getName() + "\nPrice per Night: " + hotel.get(index).getPrice(), "Room Information", JOptionPane.INFORMATION_MESSAGE);
+    public void roomInfo(int index, int roomindex, int roomType) {
+        String msg;
 
-        if (hotel.get(index).getroom(roomindex).getBookCount() == 0) {
+        msg = "Room " + hotel.get(index).getroomList().get(roomType).get(roomindex).getRoomNumber() + "\nPrice per Night: " + hotel.get(index).getroomList().get(roomType).get(roomindex).pricePerNight(hotel.get(index).getPrice());
+        JOptionPane.showMessageDialog(null, msg, "Room Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if (hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().size() == 0) {
             JOptionPane.showMessageDialog(null, "No bookings has been made!", "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            for (int i = 0; i < hotel.get(index).getroom(roomindex).getBookCount(); i++) {
-                JOptionPane.showMessageDialog(null, "Checkin: " + hotel.get(index).getroom(roomindex).getcheckin(i) + "- Checkout:" + hotel.get(index).getroom(roomindex).getcheckout(i), "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
+            for (int i = 0; i < hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().size(); i++) {
+                msg = "Checkin: " + hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().get(i).getCheckin() + "- Checkout:" + hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().get(i).getCheckout();
+                JOptionPane.showMessageDialog(null, msg, "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
             }
         }
 
@@ -523,16 +543,19 @@ public class Driver implements ActionListener {
         int checkout;
         int checkin;
 
-        int freeRooms = hotel.get(index).getNumberOfRooms();
+        int freeRooms = hotel.get(index).getroomList().size();
         int bookedRooms = 0;
 
-        for (int i = 0; i < hotel.get(index).getNumberOfRooms(); i++) {
-            for (int j = 0; j < hotel.get(index).getroom(i).getBookCount(); j++) {
-                checkout = hotel.get(index).getroom(i).getcheckout(j); //For readability
-                checkin = hotel.get(index).getroom(i).getcheckin(j); //For readability
-                if (checkout > day && checkin <= day) {
-                    bookedRooms++;
-                    freeRooms--;
+        for (int i = 0; i < 3; i++) { //Each room type
+            for (int j = 0; j < hotel.get(index).getroomList().get(i).size(); j++) { //Number of rooms for each room type
+                for(int k = 0; k < hotel.get(index).getroomList().get(i).get(j).getReservation().size(); k++){ //Reservation in each room
+                    checkout = hotel.get(index).getroomList().get(i).get(j).getReservation().get(k).getCheckout(); //For readability
+                    checkin = hotel.get(index).getroomList().get(i).get(j).getReservation().get(k).getCheckin(); //For readability
+
+                    if (checkout > day && checkin <= day) {
+                        bookedRooms++;
+                        freeRooms--;
+                    }
                 }
             }
         }
