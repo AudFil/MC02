@@ -4,11 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3bff56e0-50c4-44e2-9cef-c6e9fdcbc1d7" name="Changes" comment="v2, Completed all the subrooms and discount. No boost price for days yet.">
-      <change afterPath="$PROJECT_DIR$/src/Filipino/DatePriceModifier.java" afterDir="false" />
+    <list default="true" id="3bff56e0-50c4-44e2-9cef-c6e9fdcbc1d7" name="Changes" comment="v3, completed all classes needed, fixing driver: Manage &amp; Simulations error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Driver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Driver.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Hotel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Hotel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Reservation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Reservation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Room.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Room.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Rooms/Deluxe.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Rooms/Deluxe.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Rooms/Exclusive.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Rooms/Standard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/HRS Upgrade/Filipino/Rooms/Standard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/DatePriceModifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/DatePriceModifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Driver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Hotel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filipino/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Reservation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Deluxe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Deluxe.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Filipino/Rooms/Executive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filipino/Rooms/Executive.java" afterDir="false" />
@@ -90,7 +98,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721659324410</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="v3, completed all classes needed, fixing driver: Manage &amp; Simulations error">
+      <option name="closed" value="true" />
+      <created>1721735943017</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1721735943017</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -119,6 +135,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="v1, MC01 + GUI implemented" />
     <MESSAGE value="v2, Completed all the subrooms and discount. No boost price for days yet." />
-    <option name="LAST_COMMIT_MESSAGE" value="v2, Completed all the subrooms and discount. No boost price for days yet." />
+    <MESSAGE value="v3, completed all classes needed, fixing driver: Manage &amp; Simulations error" />
+    <option name="LAST_COMMIT_MESSAGE" value="v3, completed all classes needed, fixing driver: Manage &amp; Simulations error" />
   </component>
 </project>

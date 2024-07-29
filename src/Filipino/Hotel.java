@@ -5,8 +5,6 @@ import Filipino.Rooms.Executive;
 import Filipino.Rooms.Standard;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Hotel
@@ -39,17 +37,17 @@ public class Hotel {
         int i;
 
         for(i = room.get(0).size(); i < Nstandard; i++){
-            room.get(0).add(new Standard('S'));
+            room.get(0).add(new Standard(0));
             room.get(0).get(i).setRoomNumber(roomCount++);
         }
 
         for(i = room.get(1).size(); i < Ndeluxe; i++){
-            room.get(1).add(new Deluxe('D'));
+            room.get(1).add(new Deluxe(1));
             room.get(1).get(i).setRoomNumber(roomCount++);
         }
 
         for(i = room.get(2).size(); i < Nexecutive; i++){
-            room.get(2).add(new Executive('E'));
+            room.get(2).add(new Executive(2));
             room.get(2).get(i).setRoomNumber(roomCount++);
         }
     }
@@ -78,7 +76,7 @@ public class Hotel {
         reservationCount++;
     }
 
-    public void removeReservationCount() {
+    public void minusReservationCount() {
         reservationCount--;
     }
 
@@ -90,17 +88,67 @@ public class Hotel {
         specialRates.remove(index);
     }
 
+    public double priceForDay(int date) {
+        for (int i = 0; i < specialRates.size(); i++) {
+            if(specialRates.get(i).getStartDate() <= date && specialRates.get(i).getStartDate() > date){
+                return specialRates.get(i).getModifier() * price;
+            }
+        }
+        return price;
+    }
+
     public double computeEarnings(){
         double earnings = 0;
 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < room.get(i).size(); j++){
                 for (int k = 0; k < room.get(i).get(j).reservation.size(); k++){
-                    earnings += room.get(i).get(j).computePrice(k, price);
+                    earnings += computePrice(i, j, k);
                 }
             }
         }
         return earnings;
+    }
+
+    public double computePrice(int roomType, int roomNum, int reservationIndex){
+        double finalPrice = 0;
+        double temp = 0;
+        int i;
+
+        int checkin = room.get(roomType).get(roomNum).reservation.get(reservationIndex).getCheckin();
+        int checkout = room.get(roomType).get(roomNum).reservation.get(reservationIndex).getCheckout();
+
+        if(room.get(roomType).get(roomNum).reservation.get(reservationIndex).isValidCode()){
+            switch(room.get(roomType).get(roomNum).reservation.get(reservationIndex).getDiscountCode()){
+                case 0:
+                    for(i = checkin; i < checkout; i++){
+                        temp = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + temp;
+                    }
+                    finalPrice = temp - temp * 0.10;
+                    break;
+                case 1:
+                    for(i = checkin + 1; i < checkout; i++){
+                        finalPrice = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + finalPrice;
+                    }
+                    break;
+                case 2:
+                    for(i = checkin; i < checkout; i++){
+                        temp = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + temp;
+                    }
+                    finalPrice = temp - temp * 0.07;
+                    break;
+                default:
+                    for(i = checkin; i < checkout; i++){
+                        finalPrice = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + finalPrice;
+                    }
+            }
+        }
+        else{
+            for(i = checkin; i < checkout; i++){
+                finalPrice = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + finalPrice;
+            }
+        }
+        return finalPrice;
     }
 
     /**

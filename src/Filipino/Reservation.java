@@ -48,40 +48,20 @@ public class Reservation {
         return roomNumber;
     }
 
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
     public int getDiscountCode() {
         return discountCode;
-    }
-
-    public void setDiscountCode(int discountCode) {
-        this.discountCode = discountCode;
     }
 
     public int getCheckout() {
         return checkout;
     }
 
-    public void setCheckout(int checkout) {
-        this.checkout = checkout;
-    }
-
     public int getCheckin() {
         return checkin;
     }
 
-    public void setCheckin(int checkin) {
-        this.checkin = checkin;
-    }
-
     public String getreservationName() {
         return reservationName;
-    }
-
-    public void setreservationName(String reservationName) {
-        this.reservationName = reservationName;
     }
 
     public boolean isValidCode() {
