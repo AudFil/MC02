@@ -14,7 +14,7 @@ public class Hotel {
     private double price;
     private int roomCount = 1;
     private int reservationCount = 0;
-    private ArrayList<DatePriceModifier> specialRates = new ArrayList<>();
+    private ArrayList<Double> specialRates = new ArrayList<>();
     private ArrayList<Room> standardRooms = new ArrayList();
     private ArrayList<Room> deluxeRooms = new ArrayList();
     private ArrayList<Room> executiveRooms= new ArrayList();
@@ -28,6 +28,10 @@ public class Hotel {
         room.add(executiveRooms);//2
         addRooms(Nstandard, Ndeluxe, Nexecutive);
         price = 1299;
+
+        for(int i = 0; i < 31; i++){
+            specialRates.add(1.00);
+        }
     }
 
     /**
@@ -81,20 +85,23 @@ public class Hotel {
     }
 
     public void addspecialRates(double rate, int start, int end){
-        specialRates.add(new DatePriceModifier(rate, start, end));
+        start--;
+
+        for(int i = start; i < end; i++){
+            specialRates.set(i, rate);
+        }
     }
 
-    public void removespecialRates(int index){
-        specialRates.remove(index);
+    public void removespecialRates(int start, int end){
+        start--;
+
+        for(int i = start; i < end; i++){
+            specialRates.set(i, 1.00);
+        }
     }
 
     public double priceForDay(int date) {
-        for (int i = 0; i < specialRates.size(); i++) {
-            if(specialRates.get(i).getStartDate() <= date && specialRates.get(i).getStartDate() > date){
-                return specialRates.get(i).getModifier() * price;
-            }
-        }
-        return price;
+        return price * specialRates.get(--date);
     }
 
     public double computeEarnings(){
@@ -122,30 +129,30 @@ public class Hotel {
             switch(room.get(roomType).get(roomNum).reservation.get(reservationIndex).getDiscountCode()){
                 case 0:
                     for(i = checkin; i < checkout; i++){
-                        temp = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + temp;
+                        temp = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + temp;
                     }
-                    finalPrice = temp - temp * 0.10;
+                    finalPrice = temp * 0.90; //10% discount
                     break;
                 case 1:
-                    for(i = checkin + 1; i < checkout; i++){
-                        finalPrice = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + finalPrice;
+                    for(i = checkin + 1; i < checkout; i++){ //First day free!
+                        finalPrice = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + finalPrice;
                     }
                     break;
                 case 2:
                     for(i = checkin; i < checkout; i++){
-                        temp = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + temp;
+                        temp = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + temp;
                     }
-                    finalPrice = temp - temp * 0.07;
+                    finalPrice = temp * 0.93; //7% discount!
                     break;
                 default:
-                    for(i = checkin; i < checkout; i++){
-                        finalPrice = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + finalPrice;
+                    for(i = checkin; i < checkout; i++){ //No code
+                        finalPrice = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + finalPrice;
                     }
             }
         }
-        else{
+        else{ //No code
             for(i = checkin; i < checkout; i++){
-                finalPrice = (priceForDay(i) + priceForDay(i) * room.get(roomType).get(roomNum).getMultipler()) + finalPrice;
+                finalPrice = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + finalPrice;
             }
         }
         return finalPrice;
@@ -179,7 +186,7 @@ public class Hotel {
         return room;
     }
 
-    public ArrayList<DatePriceModifier> getSpecialRates(){
+    public ArrayList<Double> getSpecialRates(){
         return specialRates;
     }
 }

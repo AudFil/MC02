@@ -12,7 +12,7 @@ public class Driver implements ActionListener {
     private String name;
     private int standard;
     private int deluxe;
-    private int exclusive;
+    private int executive;
     private boolean valid;
 
     private JFrame frame = new JFrame();
@@ -72,15 +72,15 @@ public class Driver implements ActionListener {
                 try {
                     standard = Integer.parseInt(JOptionPane.showInputDialog("Enter Number of Standard Rooms: "));
                     deluxe = Integer.parseInt(JOptionPane.showInputDialog("Enter Number of Deluxe Rooms: "));
-                    exclusive = Integer.parseInt(JOptionPane.showInputDialog("Enter Number of Exclusive Rooms: "));
+                    executive = Integer.parseInt(JOptionPane.showInputDialog("Enter Number of Exclusive Rooms: "));
                 } catch (NumberFormatException o) {
                     valid = false;
                     JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
                 }
 
-                if (validateRooms(standard + deluxe + exclusive) && valid) {
+                if (validateRooms(standard + deluxe + executive) && valid) {
                     JOptionPane.showMessageDialog(null, "Hotel Created!", "Successful Creation", JOptionPane.INFORMATION_MESSAGE);
-                } else if (!validateRooms(standard + deluxe + exclusive) && valid) {
+                } else if (!validateRooms(standard + deluxe + executive) && valid) {
                     JOptionPane.showMessageDialog(null, "Please check number of rooms! [1-50]", "Number of rooms", JOptionPane.ERROR_MESSAGE);
                     valid = false;
                 }
@@ -89,7 +89,7 @@ public class Driver implements ActionListener {
                 valid = false;
             }
             if (valid) {
-                createHotel(name, standard, deluxe, exclusive);
+                createHotel(name, standard, deluxe, executive);
             }
         } else if (e.getSource() == viewButton) {
             if (hotel.size() > 0) {
@@ -120,8 +120,8 @@ public class Driver implements ActionListener {
      * Create Hotel
      * Create a new hotel
      */
-    public void createHotel(String hotelName, int standard, int deluxe, int exclusive) {
-        hotel.add(hotel.size(), new Hotel(hotelName, standard, deluxe, exclusive)); //Adds a new hotel to arraylist
+    public void createHotel(String hotelName, int standard, int deluxe, int executive) {
+        hotel.add(hotel.size(), new Hotel(hotelName, standard, deluxe, executive)); //Adds a new hotel to arraylist
     }
 
     /**
@@ -134,6 +134,7 @@ public class Driver implements ActionListener {
         int day = 0;
         int roomind = -1;
         int roomType = -1;
+        int date;
         int[] gData = {-1, -1, -1}; //Type, Room, Reservation
 
         boolean valid;
@@ -182,7 +183,8 @@ public class Driver implements ActionListener {
                         try {
                             msg = "1 - Standard\n2 - Deluxe\n3 - Exclusive\nPlease enter a room type: ";
                             roomType = Integer.parseInt(JOptionPane.showInputDialog(msg));
-                            roomind = Integer.parseInt(JOptionPane.showInputDialog("Please enter a room  (1 - " + hotel.get(index).getroomList().size() + "): "));
+                            roomType--; //Fixes Index
+                            roomind = Integer.parseInt(JOptionPane.showInputDialog("Please enter a room  (1 - " + hotel.get(index).getroomList().get(roomType).size() + "): "));
                         } catch (NumberFormatException o) {
                             JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
                             valid = true;
@@ -203,8 +205,7 @@ public class Driver implements ActionListener {
                                     + "\nGuest room: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).getRoomNumber()
                                     + "\nCheck-in: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).getReservation().get(gData[2]).getCheckin()
                                     + "\nCheck-out: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).getReservation().get(gData[2]).getCheckout()
-                                    + "\nTotal price: " + hotel.get(index).computePrice(gData[0], gData[1], gData[2])
-                                    + "\nPrice per night: " + hotel.get(index).getroomList().get(gData[0]).get(gData[1]).pricePerNight(hotel.get(index).getPrice());
+                                    + "\nTotal price: " + hotel.get(index).computePrice(gData[0], gData[1], gData[2]);
                             JOptionPane.showMessageDialog(null, msg, "Guest Information", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(null, "Guest not found", "Display Reservation", JOptionPane.ERROR_MESSAGE);
@@ -216,12 +217,23 @@ public class Driver implements ActionListener {
                     }
                     break;
                 case 7:
-                    for(int i = 0; i < hotel.get(index).getSpecialRates().size(); i++){
-                        msg = "Modifier: " + hotel.get(index).getSpecialRates().get(i).getModifier()
-                                + "Start" + hotel.get(index).getSpecialRates().get(i).getStartDate()
-                                + "End" + hotel.get(index).getSpecialRates().get(i).getEndDate();
-                        JOptionPane.showMessageDialog(null, msg, "View Special Dates", JOptionPane.INFORMATION_MESSAGE);
-                    }
+                    do{
+                        try {
+                            date = Integer.parseInt(JOptionPane.showInputDialog("Enter date: "));
+                        }
+                        catch (InputMismatchException o) {
+                            date = 0;
+                            JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }while(!(date >= 1 && date <= 31));
+                    date--;
+
+                    msg = "Modifier: " + hotel.get(index).getSpecialRates().get(date);
+                    JOptionPane.showMessageDialog(null, msg, "View Special Dates", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                default:
+                    break;
+
             }
 
         }
@@ -236,7 +248,6 @@ public class Driver implements ActionListener {
         int base;
         int index;
         int choice;
-        int choice2;
         boolean found;
 
         int SroomNum; //Standard
@@ -390,54 +401,39 @@ public class Driver implements ActionListener {
                         } catch (InputMismatchException o) {
                             JOptionPane.showMessageDialog(null, "Please input numbers only!", "Misinput", JOptionPane.WARNING_MESSAGE);
                         }
-                    }while(startDate >= 1 && endDate <= 31 && endDate > startDate && rate >= 50 && rate <= 150);
+                    }while(!(startDate >= 1 && endDate <= 31 && endDate > startDate && rate >= 50 && rate <= 150));
 
                     if(confirmation()){
+                        rate/= 100;
                         hotel.get(index).addspecialRates(rate, startDate, endDate);
                     }
+                    break;
                 case 7: //Remove Special Rate
-                    int number = 1;
-                    int i = 0;
                     String msg;
 
-                    if(hotel.get(index).getSpecialRates().size() > 0){
-                        if(confirmation()){
-                            msg = number + "\nRate" + hotel.get(index).getSpecialRates().get(i).getModifier()
-                                    + "\nStart" + hotel.get(index).getSpecialRates().get(i).getStartDate()
-                                    + "\nEnd Date: " + hotel.get(index).getSpecialRates().get(i).getEndDate() + "\n\n";
+                    startDate = 0;
+                    endDate = 0;
 
-                            for(i = 1; i < hotel.get(index).getSpecialRates().size(); i++){
-                                number++;
-                                msg.concat(number + "\nRate" + hotel.get(index).getSpecialRates().get(i).getModifier()
-                                        + "\nStart" + hotel.get(index).getSpecialRates().get(i).getStartDate()
-                                        + "\nEnd Date: " + hotel.get(index).getSpecialRates().get(i).getEndDate() + "\n\n");
-                            }
-
-                            msg.concat("Enter " + number + "to stop");
-
-                            do {
-                                try{
-                                    choice2 = Integer.parseInt(JOptionPane.showInputDialog(msg));
-                                }
-                                catch (InputMismatchException o){
-                                    choice2 = 0;
-                                    JOptionPane.showMessageDialog(null, "Please input numbers only!", "Misinput", JOptionPane.WARNING_MESSAGE);
-                                }
-                            }while(choice2 >= 1 && choice2 <= hotel.get(index).getSpecialRates().size());
-
-                            if(confirmation()){
-                                hotel.get(index).removespecialRates(i);
-                            }
+                    do {
+                        try{
+                            startDate = Integer.parseInt(JOptionPane.showInputDialog("Enter starting date:"));
+                            endDate = Integer.parseInt(JOptionPane.showInputDialog("Enter end date:"));
                         }
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null, "No special rates to remove!", "Remove Special Rates", JOptionPane.INFORMATION_MESSAGE);
+                        catch (InputMismatchException o){
+                            JOptionPane.showMessageDialog(null, "Please input numbers only!", "Misinput", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }while(!(startDate >= 1 && endDate <= 31 && endDate > startDate));
+
+                    if(confirmation()){
+                        hotel.get(index).removespecialRates(startDate, endDate);
                     }
                     break;
                 case 8: //Remove hotel
                     if (confirmation()) {
                         hotel.remove(index);
                     }
+                    break;
+                default:
                     break;
             }
         }
@@ -505,9 +501,8 @@ public class Driver implements ActionListener {
 
             if (free) {
                 hotel.get(index).getroomList().get(roomType).get(i).getReservation().add(new Reservation(rName, checkin, checkout, dCode, hotel.get(index).getroomList().get(roomType).get(i).getRoomNumber()));
-
                 //Msg contains the room number and the total price for the stay
-                msg = String.format("You have successfully reserved Room " + hotel.get(index).getroomList().get(roomType).get(i).getReservation().get(i).getRoomNumber() + "!"
+                msg = String.format("You have successfully reserved Room " + hotel.get(index).getroomList().get(roomType).get(i).getReservation().get(hotel.get(index).getroomList().get(roomType).get(i).getReservation().size() - 1).getRoomNumber() + "!"
                         + "\nTotal price is: %.2f", hotel.get(index).computePrice(roomType, i, hotel.get(index).getroomList().get(roomType).get(i).getReservation().size() - 1));
                 JOptionPane.showMessageDialog(null, msg, hotel.get(index).getName() + " Booking", JOptionPane.INFORMATION_MESSAGE);
 
