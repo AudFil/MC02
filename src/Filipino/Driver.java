@@ -6,6 +6,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
+/**
+ * Driver
+ */
 public class Driver implements ActionListener {
     private ArrayList<Hotel> hotel = new ArrayList<>(); //List of hotels
 
@@ -26,6 +29,10 @@ public class Driver implements ActionListener {
     private JButton manageButton = new JButton("Manage Hotel");
     private JButton simulateButton = new JButton("Simulate Booking");
 
+    /**
+     * Driver
+     * Runs the GUI together with the logic
+     */
     public Driver() {
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setVerticalTextPosition(JLabel.BOTTOM);
@@ -61,6 +68,13 @@ public class Driver implements ActionListener {
         frame.add(buttonPanel, BorderLayout.CENTER);
         frame.add(titlePanel, BorderLayout.NORTH);
     }
+
+    /**
+     * Action Performed
+     * Listens to if a button gets clicked
+     *
+     * @param e the event to be processed
+     */
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -155,14 +169,15 @@ public class Driver implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Hotel: " + hotel.get(index).getName(), "Hotel Name", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 2: //Check the number of rooms
-                    msg = "Number of Rooms: " + hotel.get(index).getroomList().size()
+                    msg = "Number of Rooms: " + (hotel.get(index).getroomList().get(0).size() + hotel.get(index).getroomList().get(1).size() + hotel.get(index).getroomList().get(2).size())
                             + "\nStandard Rooms: " + hotel.get(index).getroomList().get(0).size()
                             + "\nDeluxe Rooms: " + hotel.get(index).getroomList().get(1).size()
                             + "\nExecutive Rooms: " + hotel.get(index).getroomList().get(2).size();
                     JOptionPane.showMessageDialog(null, msg, "Number of Rooms", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 3: //Check the estimated earnings
-                    JOptionPane.showMessageDialog(null, "Estimated Earnings: " + hotel.get(index).computeEarnings(), "Estimated Earnings", JOptionPane.INFORMATION_MESSAGE);
+                    msg = String.format("Estimated Earnings: %.2f",  hotel.get(index).computeEarnings());
+                    JOptionPane.showMessageDialog(null, msg, "Estimated Earnings", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 4: //Checks the number of free and booked rooms in a specific day
                     do {
@@ -179,19 +194,29 @@ public class Driver implements ActionListener {
                     break;
                 case 5: //Gets the information of one specific room
                     do {
-                        valid = false;
                         try {
                             msg = "1 - Standard\n2 - Deluxe\n3 - Exclusive\nPlease enter a room type: ";
                             roomType = Integer.parseInt(JOptionPane.showInputDialog(msg));
                             roomType--; //Fixes Index
-                            roomind = Integer.parseInt(JOptionPane.showInputDialog("Please enter a room  (1 - " + hotel.get(index).getroomList().get(roomType).size() + "): "));
-                        } catch (NumberFormatException o) {
+                        } catch (InputMismatchException o) {
                             JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
-                            valid = true;
                         }
-                    } while (!(roomind >= 1 && roomind <= hotel.get(index).getroomList().get(roomType).size()) && valid); //Input an existing room
-                    roomind--;
-                    roomInfo(index, roomind, roomType); //Displays room information
+                    } while (!(roomType >= 0 && roomType <= 2)); //Input an existing room
+
+                    if(hotel.get(index).getroomList().get(roomType).size() > 0){
+                        do {
+                            try {
+                                roomind = Integer.parseInt(JOptionPane.showInputDialog("Please enter a room  (1 - " + hotel.get(index).getroomList().get(roomType).size() + "): "));
+                                roomind--;
+                            } catch (InputMismatchException o) {
+                                JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } while (!(roomind >= 0 && roomind < hotel.get(index).getroomList().get(roomType).size())); //Input an existing room
+                        roomInfo(index, roomind, roomType); //Displays room information
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "No rooms in given room type", "No Rooms", JOptionPane.ERROR_MESSAGE);
+                    }
                     break;
                 case 6: //Checks the information regarding an existing reservation
                     //If there is a reservation in the given hotel
@@ -245,7 +270,6 @@ public class Driver implements ActionListener {
      * Manage an existing hotel
      */
     public void manageHotel() {
-        int base;
         int index;
         int choice;
         boolean found;
@@ -266,6 +290,10 @@ public class Driver implements ActionListener {
         name = JOptionPane.showInputDialog("Enter Hotel Name to manage: ");
         index = searchHotel(name);
 
+        int Ssize = hotel.get(index).getroomList().get(0).size();
+        int Dsize = hotel.get(index).getroomList().get(1).size();
+        int Esize = hotel.get(index).getroomList().get(2).size();
+
         //If there is at least one hotel
         if (index != -1) {
             choice = JOptionPane.showOptionDialog(null, "Manage Hotel Options: ", "Manage Hotel", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, manageOptions, 0);
@@ -278,7 +306,7 @@ public class Driver implements ActionListener {
                     found = searchHotelName(newname);
 
                     //If the new name is unique
-                    if (!found) {
+                    if (found) {
                         //Last prompt before the change
                         if (confirmation()) {
                             hotel.get(index).setName(newname);
@@ -291,17 +319,17 @@ public class Driver implements ActionListener {
                     SroomNum = 0;
                     DroomNum = 0;
                     EroomNum = 0;
+
                     try {
-                        SroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + hotel.get(index).getroomList().size() + "\nHow many standard rooms would you like to add"));
-                        DroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + hotel.get(index).getroomList().size() + "\nHow many deluxe rooms would you like to add"));
-                        EroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + hotel.get(index).getroomList().size() + "\nHow many exclusive rooms would you like to add"));
+                        SroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + Ssize + "\nHow many standard rooms would you like to add"));
+                        DroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + Dsize + "\nHow many deluxe rooms would you like to add"));
+                        EroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + Esize + "\nHow many exclusive rooms would you like to add"));
                     } catch (InputMismatchException o) {
                         JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
                     }
 
                     //If the number of rooms the user wants to add and current number will be less than or equal to 50
-                    if (SroomNum + DroomNum + EroomNum + hotel.get(index).getroomList().size() <= 50 && (SroomNum != 0 || DroomNum != 0 || EroomNum != 0)) {
-
+                    if (SroomNum + DroomNum + EroomNum + Ssize + Dsize + Esize <= 50) {
                         if (confirmation()) {
                             hotel.get(index).addRooms(SroomNum, DroomNum, EroomNum);
                         }
@@ -316,41 +344,28 @@ public class Driver implements ActionListener {
                     DroomNum = 0;
                     EroomNum = 0;
 
-                    //If there are more than 1 rooms in the hotel
-                    if (hotel.get(index).getroomList().size() > 1) {
                         try {
-                            SroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + hotel.get(index).getroomList().size() + "\nHow many standard rooms would you like to remove"));
-                            DroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + hotel.get(index).getroomList().size() + "\nHow many deluxe rooms would you like to remove"));
-                            EroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + hotel.get(index).getroomList().size() + "\nHow many exclusive rooms would you like to remove"));
+                            SroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + Ssize + "\nHow many standard rooms would you like to remove"));
+                            DroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + Dsize + "\nHow many deluxe rooms would you like to remove"));
+                            EroomNum = Integer.parseInt(JOptionPane.showInputDialog("Current number of rooms: " + Esize + "\nHow many exclusive rooms would you like to remove"));
                         } catch (InputMismatchException o) {
                             JOptionPane.showMessageDialog(null, "Please enter numbers only!", "Misinput", JOptionPane.ERROR_MESSAGE);
                         }
 
                         //If the number of rooms the user wants to remove will not make the number of rooms 0
-                        if (hotel.get(index).getroomList().size() - SroomNum - DroomNum - EroomNum > 0) {
+                        if (Ssize - SroomNum > 0 || Dsize - DroomNum > 0 || Esize - EroomNum > 0){
                             if (confirmation()) {
-                                base = hotel.get(index).getroomList().size();
-
                                 hotel.get(index).removeRooms(SroomNum, 0);
                                 hotel.get(index).removeRooms(DroomNum, 1);
                                 hotel.get(index).removeRooms(EroomNum, 2);
 
-                                if (hotel.get(index).getroomList().size() - SroomNum - DroomNum - EroomNum != base) {
-                                    JOptionPane.showMessageDialog(null, "Unable to remove all rooms", "Remove Rooms", JOptionPane.ERROR_MESSAGE);
-                                }
-
-                                base = SroomNum + DroomNum + EroomNum;
-                                JOptionPane.showMessageDialog(null, base + " room/s successfully removed!", "Remove Rooms", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Rooms not removed", "Remove Rooms", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "Room/s successfully removed!", "Remove Rooms", JOptionPane.INFORMATION_MESSAGE);
                             }
 
-                        } else {
+                        }
+                        else {
                             JOptionPane.showMessageDialog(null, "Number of rooms cannot be 0!", "Remove Rooms", JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No rooms to be removed!", "Remove Rooms", JOptionPane.INFORMATION_MESSAGE);
-                    }
                     break;
                 case 4: //Update room pricing
                     newprice = hotel.get(index).getPrice();
@@ -518,6 +533,13 @@ public class Driver implements ActionListener {
     /////////////////////////////////////////////HELPING FUNCTIONS//////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Search Hotel
+     * Returns the index of the hotel being searched given the name
+     *
+     * @param hotelName
+     * @return
+     */
     public int searchHotel(String hotelName) {
         int index = -1;
         if (hotel.size() > 0) {
@@ -530,6 +552,14 @@ public class Driver implements ActionListener {
         return index;
     }
 
+    /**
+     * Search Guest
+     * Stores the guest data into an array
+     *
+     * @param index
+     * @param gName
+     * @param data
+     */
     public void searchGuest(int index, String gName, int[] data) {
         data[0] = -1; //Room Type
         data[1] = -1; //Room Number
@@ -550,21 +580,33 @@ public class Driver implements ActionListener {
         }
     }
 
+    /**
+     * Validate Rooms
+     * Checks if the number of rooms is greater than or equal to 1 and less than or equal to 50
+     *
+     * @param numOfRooms
+     * @return
+     */
     public boolean validateRooms(int numOfRooms) {
         return numOfRooms <= 50 && numOfRooms >= 1;
     }
 
+    /**
+     * Search Hotel Name
+     * Finds the hotel name
+     *
+     * @param hotelName
+     * @return
+     */
     public boolean searchHotelName(String hotelName) {
-        boolean valid = true;
 
-        if (hotel.size() > 0) {
-            for (int i = 0; i < hotel.size(); i++) {
-                if (hotelName.compareTo(hotel.get(i).getName()) == 0) {
-                    valid = false;
-                }
+        for (int i = 0; i < hotel.size(); i++) {
+            if (hotelName.compareTo(hotel.get(i).getName()) == 0) {
+                return false;
             }
         }
-        return valid;
+
+        return true;
     }
 
     /**
@@ -584,7 +626,7 @@ public class Driver implements ActionListener {
             JOptionPane.showMessageDialog(null, "No bookings has been made!", "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
         } else {
             for (int i = 0; i < hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().size(); i++) {
-                msg = "Checkin: " + hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().get(i).getCheckin() + "- Checkout:" + hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().get(i).getCheckout();
+                msg = "Checkin: " + hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().get(i).getCheckin() + "\nCheckout: " + hotel.get(index).getroomList().get(roomType).get(roomindex).getReservation().get(i).getCheckout();
                 JOptionPane.showMessageDialog(null, msg, "Room Booked Dates", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -603,7 +645,7 @@ public class Driver implements ActionListener {
         int checkout;
         int checkin;
 
-        int freeRooms = hotel.get(index).getroomList().size();
+        int freeRooms = hotel.get(index).getroomList().get(0).size() + hotel.get(index).getroomList().get(1).size() + hotel.get(index).getroomList().get(2).size();
         int bookedRooms = 0;
 
         for (int i = 0; i < 3; i++) { //Each room type
@@ -623,6 +665,12 @@ public class Driver implements ActionListener {
         JOptionPane.showMessageDialog(null, "Free rooms for day " + day + ": " + freeRooms + "\nBooked rooms for day " + day + ": " + bookedRooms, "Room Availabilty on " + day, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Confirmation
+     * If the user wants to go through with the change
+     *
+     * @return
+     */
     public boolean confirmation() {
         int choice = JOptionPane.showOptionDialog(null, "Are you sure you want apply this change?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, 0);
 
@@ -635,6 +683,13 @@ public class Driver implements ActionListener {
         return false;
     }
 
+    /**
+     * Check Discount Code
+     * Checks whether the discount code of the user is valid
+     *
+     * @param code
+     * @return
+     */
     public int checkDiscountCode(String code){
         int codeType;
 

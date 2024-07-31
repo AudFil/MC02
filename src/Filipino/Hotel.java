@@ -20,7 +20,15 @@ public class Hotel {
     private ArrayList<Room> executiveRooms= new ArrayList();
     private ArrayList<ArrayList<Room>> room = new ArrayList();
 
-    //0 = standard, 1 = deluxe, 2 = executive
+    /**
+     * Hotel
+     * 0 = standard, 1 = deluxe, 2 = executive
+     *
+     * @param name
+     * @param Nstandard
+     * @param Ndeluxe
+     * @param Nexecutive
+     */
     public Hotel(String name, int Nstandard, int Ndeluxe, int Nexecutive) {
         this.name = name;
         room.add(standardRooms); //0
@@ -35,38 +43,47 @@ public class Hotel {
     }
 
     /**
-     * Methods
+     * Add Rooms
+     * Adds how many rooms of each type
+     *
+     * @param Nstandard
+     * @param Ndeluxe
+     * @param Nexecutive
      */
     public void addRooms(int Nstandard, int Ndeluxe, int Nexecutive){
         int i;
 
-        for(i = room.get(0).size(); i < Nstandard; i++){
-            room.get(0).add(new Standard(0));
-            room.get(0).get(i).setRoomNumber(roomCount++);
+        for(i = 0; i < Nstandard; i++){
+            room.get(0).add(new Standard(0, roomCount++));
         }
 
-        for(i = room.get(1).size(); i < Ndeluxe; i++){
-            room.get(1).add(new Deluxe(1));
-            room.get(1).get(i).setRoomNumber(roomCount++);
+        for(i = 0; i < Ndeluxe; i++){
+            room.get(1).add(new Deluxe(1, roomCount++));
         }
 
-        for(i = room.get(2).size(); i < Nexecutive; i++){
-            room.get(2).add(new Executive(2));
-            room.get(2).get(i).setRoomNumber(roomCount++);
+        for(i = 0; i < Nexecutive; i++){
+            room.get(2).add(new Executive(2, roomCount++));
         }
     }
 
+    /**
+     * Remove Rooms
+     * Removes one certain type of room
+     *
+     * @param Nremove
+     * @param roomType
+     */
     public void removeRooms(int Nremove, int roomType){
         int i = 0;
         int skip = 0;
-        int base = room.size();
+        int base = room.get(roomType).size();
         boolean stop = false;
 
         while(i < Nremove + skip && !stop) {
             if(i >= base){
                 stop = true;
             }
-            else if(room.get(roomType).get(skip).getReservation().size() == 0){
+            else if(room.get(roomType).get(skip).getReservation().isEmpty()){
                 room.get(roomType).remove(skip);
             }
             else{
@@ -76,14 +93,27 @@ public class Hotel {
         }
     }
 
+    /**
+     * Add Reservation Count
+     */
     public void addReservationCount() {
         reservationCount++;
     }
 
+    /**
+     * Minus Reservation Count
+     */
     public void minusReservationCount() {
         reservationCount--;
     }
 
+    /**
+     * Add Special Rates
+     *
+     * @param rate
+     * @param start
+     * @param end
+     */
     public void addspecialRates(double rate, int start, int end){
         start--;
 
@@ -92,6 +122,11 @@ public class Hotel {
         }
     }
 
+    /**
+     * Remove Special Rates
+     * @param start
+     * @param end
+     */
     public void removespecialRates(int start, int end){
         start--;
 
@@ -100,10 +135,19 @@ public class Hotel {
         }
     }
 
+    /**
+     * Price For Day
+     * @param date
+     * @return
+     */
     public double priceForDay(int date) {
         return price * specialRates.get(--date);
     }
 
+    /**
+     * Compute Earnings
+     * @return
+     */
     public double computeEarnings(){
         double earnings = 0;
 
@@ -117,6 +161,13 @@ public class Hotel {
         return earnings;
     }
 
+    /**
+     * Compute Price
+     * @param roomType
+     * @param roomNum
+     * @param reservationIndex
+     * @return
+     */
     public double computePrice(int roomType, int roomNum, int reservationIndex){
         double finalPrice = 0;
         double temp = 0;
@@ -129,63 +180,87 @@ public class Hotel {
             switch(room.get(roomType).get(roomNum).reservation.get(reservationIndex).getDiscountCode()){
                 case 0:
                     for(i = checkin; i < checkout; i++){
-                        temp = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + temp;
+                        temp = (priceForDay(i) + (priceForDay(i) * room.get(roomType).get(roomNum).getMultiplier())) + temp;
                     }
                     finalPrice = temp * 0.90; //10% discount
                     break;
                 case 1:
                     for(i = checkin + 1; i < checkout; i++){ //First day free!
-                        finalPrice = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + finalPrice;
+                        finalPrice = (priceForDay(i) + (priceForDay(i) * room.get(roomType).get(roomNum).getMultiplier())) + finalPrice;
                     }
                     break;
                 case 2:
                     for(i = checkin; i < checkout; i++){
-                        temp = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + temp;
+                        temp = (priceForDay(i) + (priceForDay(i) * room.get(roomType).get(roomNum).getMultiplier())) + temp;
                     }
                     finalPrice = temp * 0.93; //7% discount!
                     break;
                 default:
                     for(i = checkin; i < checkout; i++){ //No code
-                        finalPrice = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + finalPrice;
+                        finalPrice = (priceForDay(i) + (priceForDay(i) * room.get(roomType).get(roomNum).getMultiplier())) + finalPrice;
                     }
             }
         }
         else{ //No code
             for(i = checkin; i < checkout; i++){
-                finalPrice = (priceForDay(i) * (1 - room.get(roomType).get(roomNum).getMultipler())) + finalPrice;
+                finalPrice = (priceForDay(i) + (priceForDay(i) * room.get(roomType).get(roomNum).getMultiplier())) + finalPrice;
             }
         }
         return finalPrice;
     }
 
     /**
-     * Getters and Setters
+     * Get Name
+     * @return
      */
-
     public String getName() {
         return name;
     }
 
+    /**
+     * Set Name
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get Price
+     * @return
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * Set Price
+     * @param price
+     */
     public void setPrice(double price) {
         this.price = price;
     }
 
+    /**
+     * Get Reservation Count
+     * @return
+     */
     public int getReservationCount() {
         return reservationCount;
     }
 
+    /**
+     * Get Room List
+     * @return
+     */
     public ArrayList<ArrayList<Room>> getroomList(){
         return room;
     }
 
+    /**
+     * Get Special Rates
+     * @return
+     */
     public ArrayList<Double> getSpecialRates(){
         return specialRates;
     }
